@@ -28,6 +28,13 @@ class PositionController:
 
         remaining = [goal.target_x_change, goal.target_yaw_change]
 
+        # if the target is zero, we do nothing
+        if goal.target_x_change == 0:
+            goal.linear_speed = 0
+
+        if goal.target_yaw_change == 0:
+            goal.angular_speed = 0
+
         vel_x = abs(goal.linear_speed)
         if vel_x > self._max_lin_vel:
             vel_x = self._max_lin_vel
@@ -40,7 +47,6 @@ class PositionController:
         if goal.target_yaw_change < 0:
             vel_yaw = -vel_yaw
 
-        vel_yaw = goal.angular_speed if goal.target_yaw_change >= 0 else -goal.angular_speed
         cmd = Twist()
         cmd.linear.x = vel_x
         cmd.linear.y = cmd.linear.z = 0
