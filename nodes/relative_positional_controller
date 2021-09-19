@@ -16,11 +16,18 @@ class PositionController:
         self._pub = rospy.Publisher("~cmd_vel", Twist, queue_size=10)
         self._max_lin_vel = rospy.get_param("~max_lin_vel", 1.0)
         self._max_ang_vel = rospy.get_param("~max_ang_vel", math.pi/2)
+        self._max_age = rospy.get_param("~max_age", 3.0)
         self._as = actionlib.SimpleActionServer(self._action_name, RelativeMoveAction, execute_cb=self.execute_cb, auto_start=False)
         self._as.start()
 
     def execute_cb(self, goal):
         assert isinstance(goal, RelativeMoveGoal)
+
+        age = rospy.Time.now() - goal.header.stamp
+        if age.to_sec() > self._max_age:
+            rospy.logwarn("Too old positional command received, ignoring (age " + str(age) + ")")
+            return
+
         # helper variables
         r = rospy.Rate(10)
         dur = r.sleep_dur
@@ -77,6 +84,7 @@ class PositionController:
             remaining[1] -= motion_length_ang
             self._feedback.remaining_x = remaining[0]
             self._feedback.remaining_yaw = remaining[1]
+            self._feedback.header.stamp = rospy.Time.now()
             # publish the feedback
             self._as.publish_feedback(self._feedback)
 
@@ -89,6 +97,7 @@ class PositionController:
         if success:
             self._result.remaining_x = self._feedback.remaining_x
             self._result.remaining_yaw = self._feedback.remaining_yaw
+            self._result.header.stamp = rospy.Time.now()
             rospy.loginfo('%s: Succeeded' % self._action_name)
             self._as.set_succeeded(self._result)
 
