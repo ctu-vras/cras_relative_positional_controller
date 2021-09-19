@@ -1,0 +1,12 @@
+float64 target_x_change
+float64 target_yaw_change
+float64 linear_speed
+float64 angular_speed
+---
+float64 remaining_x
+float64 remaining_yaw
+float64 linear_speed
+float64 angular_speed
+---
+float64 remaining_x
+float64 remaining_yaw
