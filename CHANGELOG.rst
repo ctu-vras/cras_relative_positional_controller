@@ -2,8 +2,8 @@
 Changelog for package cras_relative_positional_controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.0 (2023-08-30)
+------------------
 * Renamed to cras_relative_positional_controller.
 * Contributors: Martin Pecka
 
