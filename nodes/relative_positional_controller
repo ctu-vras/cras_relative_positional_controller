@@ -3,7 +3,8 @@ import math
 import rospy
 
 import actionlib
-from relative_positional_controller.msg import RelativeMoveFeedback, RelativeMoveResult, RelativeMoveAction, RelativeMoveGoal
+from cras_relative_positional_controller.msg import RelativeMoveFeedback, RelativeMoveResult, RelativeMoveAction, \
+    RelativeMoveGoal
 from geometry_msgs.msg import Twist
 
 
@@ -17,7 +18,8 @@ class PositionController:
         self._max_lin_vel = rospy.get_param("~max_lin_vel", 1.0)
         self._max_ang_vel = rospy.get_param("~max_ang_vel", math.pi/2)
         self._max_age = rospy.get_param("~max_age", 3.0)
-        self._as = actionlib.SimpleActionServer(self._action_name, RelativeMoveAction, execute_cb=self.execute_cb, auto_start=False)
+        self._as = actionlib.SimpleActionServer(self._action_name, RelativeMoveAction, execute_cb=self.execute_cb,
+                                                auto_start=False)
         self._as.start()
 
     def execute_cb(self, goal):
@@ -63,7 +65,8 @@ class PositionController:
         motion_length_lin = vel_x * dur.to_sec()
         motion_length_ang = vel_yaw * dur.to_sec()
         i = 0
-        while not rospy.is_shutdown() and (abs(remaining[0]) > abs(motion_length_lin) or abs(remaining[1]) > abs(motion_length_ang)):
+        while not rospy.is_shutdown() and \
+                (abs(remaining[0]) > abs(motion_length_lin) or abs(remaining[1]) > abs(motion_length_ang)):
 
             if self._as.is_preempt_requested():
                 rospy.loginfo('%s: Preempted' % self._action_name)

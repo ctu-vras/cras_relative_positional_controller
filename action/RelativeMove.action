@@ -1,15 +1,18 @@
 std_msgs/Header header
 float64 target_x_change
+float64 target_y_change
 float64 target_yaw_change
 float64 linear_speed
 float64 angular_speed
 ---
 std_msgs/Header header
 float64 remaining_x
+float64 remaining_y
 float64 remaining_yaw
 float64 linear_speed
 float64 angular_speed
 ---
 std_msgs/Header header
 float64 remaining_x
+float64 remaining_y
 float64 remaining_yaw
